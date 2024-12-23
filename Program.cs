@@ -8,19 +8,19 @@ namespace FL_Aloha
             int numberOfStation = 10;
             int time = 60000;
             int count = 0;
-            // Khởi tạo các trạm phát và trạm nhận
+            // Init stations
             Station[] stations = new Station[numberOfStation];
             for (int i = 0; i < numberOfStation; i++)
             {
                 stations[i] = new Station(i);
             }
             SIC applicableObj = new SIC();
-            // Lặp lại cho đến khi tất cả các gói dữ liệu được truyền đi
+            // Repeat until all data packets are transmitted
             for (int i = 0; i < time / 500; i++)
             {
                 Thread.Sleep(500);
                 count++;
-                // Mỗi trạm phát sẽ phát một gói dữ liệu với một xác suất nhất định
+                // Each transmitter station will broadcast a data packet with a certain probability
                 Random rand = new Random();
                 foreach (var station in stations)
                 {
@@ -30,7 +30,7 @@ namespace FL_Aloha
                     }
                 }
 
-                // Xử lý xung đột
+                // Conflict Handling
                 foreach (var station in stations)
                 {
                     if (station.IsPacketSent)
@@ -54,21 +54,21 @@ namespace FL_Aloha
                 }
             }
 
-            // số gói phát đi 
+            // Packets Sent 
             int totalPacketsSent = 0;
             foreach (var station in stations)
             {
                 totalPacketsSent += station.PacketsSent;
             }
-            // số gói nhận được
+            // Packet Rêcived
             int totalPacketsReceivedSuccessfully = 0;
             foreach (var station in stations)
             {
                 totalPacketsReceivedSuccessfully += station.PacketsReceived;
             }
-            // In kết quả
-            Console.WriteLine("Tổng số gói gửi đi là : " + totalPacketsSent);
-            Console.WriteLine("Tổng số gói nhận được là  : " + totalPacketsReceivedSuccessfully);
+            // Réult
+            Console.WriteLine("Total Sent Package : " + totalPacketsSent);
+            Console.WriteLine("Total Successful Received Package  : " + totalPacketsReceivedSuccessfully);
             Console.WriteLine(count);
             var stationsArray = Enumerable.Range(1, numberOfStation).ToArray();
             var packetsSentData = stations.Select(s => (double)s.PacketsSent).ToArray();
